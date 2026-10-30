@@ -73,6 +73,26 @@ A game is a series of hands in which players accumulate points up to the **targe
 
 > In the main version, the app **does not simulate the morra hand**: it counts points and manages the tournament and rankings. The fingers and called numbers stay, as tradition has it, between the players. A simulated game mode is however among the [future ideas](#future-ideas).
 
+#### Which numbers can you call? (a limit on your own call)
+
+The fingers you show also **limit what you can reasonably call**. The opponent shows between 1 and 5 fingers, so the sum can only fall within a range based on **your own** hand:
+
+> **Your fingers + 1 ≤ the sum ≤ Your fingers + 5**
+
+_Example:_ if you show **2 fingers**, the lowest possible sum is 2 + 1 = 3 and the highest is 2 + 5 = 7. So you **cannot call 8**: whatever the opponent shows, 2 plus anything from 1 to 5 can never make 8. Calling it would mean calling a sum that is mathematically impossible.
+
+| You show  | Possible sums | Impossible calls |
+| --------- | ------------- | ---------------- |
+| 1 finger  | 2 – 6         | 7, 8, 9, 10      |
+| 2 fingers | 3 – 7         | 2, 8, 9, 10      |
+| 3 fingers | 4 – 8         | 2, 3, 9, 10      |
+| 4 fingers | 5 – 9         | 2, 3, 4, 10      |
+| 5 fingers | 6 – 10        | 2, 3, 4, 5       |
+
+#### The closed fist counts as 1
+
+Showing a **closed fist** is the same as showing **one finger**: both are worth **1**. There is no "zero" in morra, so the lowest number you can show is always 1.
+
 ### How it is played in a tournament
 
 - Played by **four, two against two**: one team on each side of the table.
@@ -535,6 +555,26 @@ _Esempio:_ A mostra 3 dita e dice "7", B mostra 2 dita e dice "5". La somma è 5
 Un incontro è una successione di mani in cui i giocatori accumulano punti fino al **punteggio target** (di norma 16). Nel torneo questo duello si inserisce nel formato a coppie descritto qui sotto.
 
 > Nella versione principale l'app **non simula la mano di morra**: serve a contare i punti, gestire il torneo e le classifiche. Le dita e i numeri detti restano, come da tradizione, tra i giocatori. Una modalità di gioco simulata è però tra le [idee future](#idee-future).
+
+#### Quali numeri si possono dire? (un limite sul proprio numero)
+
+Le dita che mostri **limitano anche il numero che ha senso dire**. L'avversario mostra da 1 a 5 dita, quindi la somma può cadere solo in un intervallo che dipende dalla **tua** mano:
+
+> **Le tue dita + 1 ≤ somma ≤ Le tue dita + 5**
+
+_Esempio:_ se mostri **2 dita**, la somma minima possibile è 2 + 1 = 3 e la massima è 2 + 5 = 7. Quindi **non puoi dire 8**: qualunque cosa mostri l'avversario, 2 più un numero da 1 a 5 non potrà mai fare 8. Dire 8 significherebbe chiamare una somma matematicamente impossibile.
+
+| Mostri | Somme possibili | Chiamate impossibili |
+| ------ | --------------- | -------------------- |
+| 1 dito | 2 – 6           | 7, 8, 9, 10          |
+| 2 dita | 3 – 7           | 2, 8, 9, 10          |
+| 3 dita | 4 – 8           | 2, 3, 9, 10          |
+| 4 dita | 5 – 9           | 2, 3, 4, 10          |
+| 5 dita | 6 – 10          | 2, 3, 4, 5           |
+
+#### Il pugno chiuso vale 1
+
+Mostrare il **pugno chiuso** equivale a mostrare **un dito**: entrambi valgono **1**. Nella morra non esiste lo "zero", quindi il numero più basso che si può mostrare è sempre 1.
 
 ### Come si gioca in torneo
 
