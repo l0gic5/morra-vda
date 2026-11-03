@@ -50,7 +50,12 @@ final class GameScore {
 }
 
 final class ScoringGame {
-  ScoringGame({this.target = 16}) : assert(target > 0);
+  ScoringGame({this.target = 16, Iterable<ScoringEvent> events = const []})
+    : assert(target > 0) {
+    for (final event in events) {
+      _appendFromReplay(event);
+    }
+  }
 
   final int target;
   final List<ScoringEvent> _events = [];
@@ -61,7 +66,6 @@ final class ScoringGame {
   GameScore get score {
     var teamOne = 0;
     var teamTwo = 0;
-    final loweredBy = <Team>{};
     final undone = <String>{};
 
     for (final event in _events) {
@@ -81,8 +85,7 @@ final class ScoringGame {
           } else {
             teamTwo++;
           }
-        case HandLowered(team: final team, points: final points):
-          loweredBy.add(team);
+        case HandLowered(points: final points):
           teamOne -= points;
           teamTwo -= points;
         case EventUndone():
@@ -107,12 +110,12 @@ final class ScoringGame {
     );
   }
 
-  String addPoint(Team team) {
+  String addPoint(Team team, {String? id}) {
     _ensureInProgress();
-    return _append(PointScored(id: _newId(), team: team));
+    return _append(PointScored(id: id ?? _newId(), team: team));
   }
 
-  String lowerHand({required Team team, required int points}) {
+  String lowerHand({required Team team, required int points, String? id}) {
     _ensureInProgress();
     if (!score.isTie) {
       throw StateError('La mano si può abbassare solo in caso di parità.');
@@ -125,11 +128,12 @@ final class ScoringGame {
         'La squadra ha già abbassato la mano in questa partita.',
       );
     }
-    return _append(HandLowered(id: _newId(), team: team, points: points));
+    return _append(HandLowered(id: id ?? _newId(), team: team, points: points));
   }
 
-  String undo(String eventId) {
-    if (!_events.any((event) => event.id == eventId)) {
+  String undo(String eventId, {String? id}) {
+    final event = _events.where((event) => event.id == eventId).firstOrNull;
+    if (event == null || event is EventUndone) {
       throw ArgumentError.value(eventId, 'eventId');
     }
     if (_events.any(
@@ -137,15 +141,57 @@ final class ScoringGame {
     )) {
       throw StateError('L\'evento è già stato annullato.');
     }
-    return _append(EventUndone(id: _newId(), eventId: eventId));
+    return _append(EventUndone(id: id ?? _newId(), eventId: eventId));
   }
 
   String _append(ScoringEvent event) {
+    if (event.id.isEmpty || _events.any((current) => current.id == event.id)) {
+      throw ArgumentError.value(event.id, 'event.id');
+    }
     _events.add(event);
     return event.id;
   }
 
-  String _newId() => 'event-${_nextEventId++}';
+  String _newId() {
+    var id = 'event-${_nextEventId++}';
+    while (_events.any((event) => event.id == id)) {
+      id = 'event-${_nextEventId++}';
+    }
+    return id;
+  }
+
+  void _appendFromReplay(ScoringEvent event) {
+    switch (event) {
+      case PointScored():
+        _ensureInProgress();
+      case HandLowered(:final team, :final points):
+        _ensureInProgress();
+        if (!score.isTie) {
+          throw StateError('La mano si può abbassare solo in caso di parità.');
+        }
+        if (points <= 0 || points > score.teamOne) {
+          throw ArgumentError.value(points, 'points');
+        }
+        if (_hasActiveLowering(team)) {
+          throw StateError(
+            'La squadra ha già abbassato la mano in questa partita.',
+          );
+        }
+      case EventUndone(:final eventId):
+        final target = _events
+            .where((event) => event.id == eventId)
+            .firstOrNull;
+        if (target == null || target is EventUndone) {
+          throw ArgumentError.value(eventId, 'eventId');
+        }
+        if (_events.any(
+          (current) => current is EventUndone && current.eventId == eventId,
+        )) {
+          throw StateError('L\'evento è già stato annullato.');
+        }
+    }
+    _append(event);
+  }
 
   bool _hasActiveLowering(Team team) {
     final undone = _events
@@ -202,12 +248,17 @@ final class Match {
 
   void recordGame(GameScore game) {
     final winner = game.winner;
-    if (winner == null) {
+    if (winner == null || game.status != GameStatus.won) {
       throw StateError('Si può registrare solo una partita vinta.');
+    }
+    if (game.scoreFor(winner) <= game.scoreFor(_otherTeam(winner))) {
+      throw ArgumentError.value(game, 'game');
     }
     if (score.isComplete) {
       throw StateError('L\'incontro è già terminato.');
     }
     _gameWinners.add(winner);
   }
+
+  Team _otherTeam(Team team) => team == Team.one ? Team.two : Team.one;
 }

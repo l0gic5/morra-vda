@@ -65,6 +65,42 @@ void main() {
       expect(game.score.teamTwo, 1);
       expect(() => game.undo(pointId), throwsStateError);
     });
+
+    test('accetta ID generati dal client e li conserva nel registro', () {
+      final game = ScoringGame();
+
+      final pointId = game.addPoint(Team.one, id: 'device-a-1');
+
+      expect(pointId, 'device-a-1');
+      expect(game.events.single.id, 'device-a-1');
+    });
+
+    test('rigioca un registro ordinato e ne ricostruisce il punteggio', () {
+      final events = <ScoringEvent>[
+        const PointScored(id: 'device-a-1', team: Team.one),
+        const PointScored(id: 'device-a-2', team: Team.two),
+        const EventUndone(id: 'device-a-3', eventId: 'device-a-1'),
+      ];
+
+      final game = ScoringGame(events: events);
+
+      expect(game.score.teamOne, 0);
+      expect(game.score.teamTwo, 1);
+      expect(game.events, orderedEquals(events));
+    });
+
+    test('rifiuta ID duplicati e annullamento di un annullamento', () {
+      final game = ScoringGame();
+      game.addPoint(Team.one, id: 'point');
+
+      expect(() => game.addPoint(Team.two, id: 'point'), throwsArgumentError);
+      expect(
+        () => ScoringGame(
+          events: [const EventUndone(id: 'undo', eventId: 'missing')],
+        ),
+        throwsArgumentError,
+      );
+    });
   });
 
   test('un incontro termina alla terza partita vinta', () {
@@ -91,5 +127,29 @@ void main() {
     expect(match.score.teamTwoGames, 1);
     expect(match.score.winner, Team.one);
     expect(() => match.recordGame(wonByTwo), throwsStateError);
+  });
+
+  test('rifiuta un risultato incoerente quando registra una partita', () {
+    final match = Match();
+    final invalidGame = GameScore(
+      teamOne: 16,
+      teamTwo: 10,
+      status: GameStatus.inProgress,
+      winner: Team.one,
+    );
+
+    expect(() => match.recordGame(invalidGame), throwsStateError);
+  });
+
+  test('rifiuta un vincitore che non ha il punteggio maggiore', () {
+    final match = Match();
+    final invalidGame = GameScore(
+      teamOne: 10,
+      teamTwo: 16,
+      status: GameStatus.won,
+      winner: Team.one,
+    );
+
+    expect(() => match.recordGame(invalidGame), throwsArgumentError);
   });
 }

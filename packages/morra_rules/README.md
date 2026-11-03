@@ -52,7 +52,7 @@ void main() {
 
 ## Design notes
 
-- **Events, not counters.** Undo, history and replaying a disputed game come from the event list. Events carry client-generated IDs so a server can insert them idempotently.
+- **Events, not counters.** Undo, history and replaying a disputed game come from the event list. Events carry client-generated IDs so a server can insert them idempotently. `ScoringGame` can replay an ordered event log through its `events` parameter; duplicate IDs, invalid references and attempts to undo another undo are rejected.
 - **No Flutter, no I/O.** Keeping the package pure makes it fast to test and shareable with the server.
 - **Rules are configurable** (target score, games to win, lowering amounts), because local variants differ between clubs and seasons.
 
