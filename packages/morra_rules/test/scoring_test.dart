@@ -42,9 +42,9 @@ void main() {
       expect(game.score.teamOne, 5);
       expect(game.score.teamTwo, 5);
       expect(() => game.lowerHand(team: Team.one, points: 5), throwsStateError);
-      game.lowerHand(team: Team.two, points: 1);
-      expect(game.score.teamOne, 4);
-      expect(game.score.teamTwo, 4);
+      game.lowerHand(team: Team.two, points: 5);
+      expect(game.score.teamOne, 0);
+      expect(game.score.teamTwo, 0);
     });
 
     test('rifiuta abbassamento fuori parità', () {
@@ -52,6 +52,21 @@ void main() {
       game.addPoint(Team.one);
 
       expect(() => game.lowerHand(team: Team.one, points: 1), throwsStateError);
+    });
+
+    test('accetta solo gli abbassamenti previsti dal regolamento', () {
+      final game = ScoringGame();
+      for (var i = 0; i < 10; i++) {
+        game.addPoint(Team.one);
+        game.addPoint(Team.two);
+      }
+
+      expect(
+        () => game.lowerHand(team: Team.one, points: 1),
+        throwsArgumentError,
+      );
+      game.lowerHand(team: Team.one, points: 10);
+      expect(game.score.teamOne, 0);
     });
 
     test('annulla un evento e lo esclude dalla somma', () {
@@ -151,5 +166,47 @@ void main() {
     );
 
     expect(() => match.recordGame(invalidGame), throwsArgumentError);
+  });
+
+  test('usa 21 solo per la bella dopo il 2-2', () {
+    final match = Match();
+    final regularGame = GameScore(
+      teamOne: 16,
+      teamTwo: 10,
+      status: GameStatus.won,
+      winner: Team.one,
+    );
+    final decidingGame = GameScore(
+      teamOne: 21,
+      teamTwo: 19,
+      status: GameStatus.won,
+      target: 21,
+      winner: Team.one,
+    );
+
+    expect(match.nextGameTarget, 16);
+    match.recordGame(regularGame);
+    match.recordGame(regularGame);
+    match.recordGame(
+      GameScore(
+        teamOne: 10,
+        teamTwo: 16,
+        status: GameStatus.won,
+        winner: Team.two,
+      ),
+    );
+    match.recordGame(
+      GameScore(
+        teamOne: 10,
+        teamTwo: 16,
+        status: GameStatus.won,
+        winner: Team.two,
+      ),
+    );
+
+    expect(match.nextGameTarget, 21);
+    expect(() => match.recordGame(regularGame), throwsArgumentError);
+    match.recordGame(decidingGame);
+    expect(match.score.winner, Team.one);
   });
 }

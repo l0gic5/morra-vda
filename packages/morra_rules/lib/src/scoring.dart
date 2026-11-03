@@ -1,5 +1,7 @@
 enum Team { one, two }
 
+const allowedLoweringPoints = {5, 10, 15, 20};
+
 sealed class ScoringEvent {
   const ScoringEvent({required this.id});
 
@@ -36,12 +38,14 @@ final class GameScore {
     required this.teamOne,
     required this.teamTwo,
     required this.status,
+    this.target = 16,
     this.winner,
   });
 
   final int teamOne;
   final int teamTwo;
   final GameStatus status;
+  final int target;
   final Team? winner;
 
   bool get isTie => teamOne == teamTwo;
@@ -106,6 +110,7 @@ final class ScoringGame {
           : teamOne == teamTwo
           ? GameStatus.tied
           : GameStatus.inProgress,
+      target: target,
       winner: winner,
     );
   }
@@ -120,7 +125,7 @@ final class ScoringGame {
     if (!score.isTie) {
       throw StateError('La mano si può abbassare solo in caso di parità.');
     }
-    if (points <= 0 || points > score.teamOne) {
+    if (!allowedLoweringPoints.contains(points) || points > score.teamOne) {
       throw ArgumentError.value(points, 'points');
     }
     if (_hasActiveLowering(team)) {
@@ -169,7 +174,7 @@ final class ScoringGame {
         if (!score.isTie) {
           throw StateError('La mano si può abbassare solo in caso di parità.');
         }
-        if (points <= 0 || points > score.teamOne) {
+        if (!allowedLoweringPoints.contains(points) || points > score.teamOne) {
           throw ArgumentError.value(points, 'points');
         }
         if (_hasActiveLowering(team)) {
@@ -225,12 +230,24 @@ final class MatchScore {
 }
 
 final class Match {
-  Match({this.gamesToWin = 3}) : assert(gamesToWin > 0);
+  Match({
+    this.gamesToWin = 3,
+    this.regularGameTarget = 16,
+    this.decidingGameTarget = 21,
+  }) : assert(gamesToWin > 0),
+       assert(regularGameTarget > 0),
+       assert(decidingGameTarget > 0);
 
   final int gamesToWin;
+  final int regularGameTarget;
+  final int decidingGameTarget;
   final List<Team> _gameWinners = [];
 
   List<Team> get gameWinners => List.unmodifiable(_gameWinners);
+
+  int get nextGameTarget => _gameWinners.length == gamesToWin * 2 - 2
+      ? decidingGameTarget
+      : regularGameTarget;
 
   MatchScore get score {
     final teamOne = _gameWinners.where((team) => team == Team.one).length;
@@ -251,11 +268,12 @@ final class Match {
     if (winner == null || game.status != GameStatus.won) {
       throw StateError('Si può registrare solo una partita vinta.');
     }
-    if (game.scoreFor(winner) <= game.scoreFor(_otherTeam(winner))) {
-      throw ArgumentError.value(game, 'game');
-    }
     if (score.isComplete) {
       throw StateError('L\'incontro è già terminato.');
+    }
+    if (game.target != nextGameTarget ||
+        game.scoreFor(winner) <= game.scoreFor(_otherTeam(winner))) {
+      throw ArgumentError.value(game, 'game');
     }
     _gameWinners.add(winner);
   }

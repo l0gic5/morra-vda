@@ -35,7 +35,7 @@ void main() {
   print(game.score.isTie);   // true
 
   // when the score is tied, a team can lower the hand (once per game)
-  game.lowerHand(team: Team.one, points: 1);
+  game.lowerHand(team: Team.one, points: 5);
 
   // undo any event by its id
   final id = game.addPoint(Team.two);
@@ -54,7 +54,7 @@ void main() {
 
 - **Events, not counters.** Undo, history and replaying a disputed game come from the event list. Events carry client-generated IDs so a server can insert them idempotently. `ScoringGame` can replay an ordered event log through its `events` parameter; duplicate IDs, invalid references and attempts to undo another undo are rejected.
 - **No Flutter, no I/O.** Keeping the package pure makes it fast to test and shareable with the server.
-- **Rules are configurable** (target score, games to win, lowering amounts), because local variants differ between clubs and seasons.
+- **Rules are configurable** (target score, games to win, deciding-game target and lowering amounts). Lowering accepts 5, 10, 15 or 20 points; the latter two are rare but supported.
 
 ## Development
 
