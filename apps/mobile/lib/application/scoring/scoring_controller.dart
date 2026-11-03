@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:morra_vda/domain/scoring/scoring.dart';
+import 'package:morra_rules/morra_rules.dart';
 
 final class ScoringController extends ChangeNotifier {
   ScoringController({int target = 16}) : game = ScoringGame(target: target);

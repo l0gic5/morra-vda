@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:morra_vda/application/scoring/scoring_controller.dart';
-import 'package:morra_vda/domain/scoring/scoring.dart';
+import 'package:morra_rules/morra_rules.dart';
 
 final class ScoringPage extends StatefulWidget {
   const ScoringPage({super.key});

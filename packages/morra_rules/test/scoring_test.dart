@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:morra_vda/domain/scoring/scoring.dart';
+import 'package:morra_rules/morra_rules.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('ScoringGame', () {

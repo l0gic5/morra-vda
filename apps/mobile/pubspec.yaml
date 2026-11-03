@@ -1,6 +1,6 @@
 name: morra_vda
 description: 'Mobile app for Morra Valdostana tournaments: stage calendar, QR check-in, offline score counter, live standings and season rankings.'
-publish_to: 'none' # Not meant for pub.dev
+publish_to: none
 
 version: 0.1.0+1
 
@@ -10,7 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+  morra_rules:
+    path: ../../packages/morra_rules
+  cupertino_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:
