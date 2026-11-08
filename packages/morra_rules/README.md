@@ -18,7 +18,39 @@ This package is internal to the monorepo (`publish_to: none`).
 - `GameScore`: current score, status (`inProgress`, `tied`, `won`) and winner.
 - `Match`: a series of games, won by the first team to win `gamesToWin` games (3 by default).
 
-Planned: pairings (baraonda and fixed pairs, remainder handling), stage points and season ranking.
+Planned: qualification groups and knockout brackets for baraonda, fixed-pair
+pairings, stage points and season ranking.
+
+## Tournament format
+
+A stage always has two phases:
+
+1. qualification groups;
+2. a knockout phase with the required power-of-two bracket: round of 16,
+   quarter-finals, semi-finals and final. Smaller stages omit unnecessary
+   initial rounds.
+
+For baraonda, the qualification rules are:
+
+- up to 19 players: 5 games with a newly drawn pair each time; the top 8
+  players advance to the semi-finals and are paired again; the younger player
+  wins an eighth-place tie-break;
+- 20 players: two groups of 5 pairs, top 4 pairs from each group advance to
+  the quarter-finals;
+- 22 players: groups of 6 and 5 pairs, top 4 pairs from each advance;
+- 24 players: two groups of 6 pairs, top 4 pairs from each advance;
+- 26 players: groups of 5, 4 and 4 pairs; top 3 from the group of 5 and top 2
+  from each group of 4 advance, with the third-placed pairs from those groups
+  playing a tie-break for the final quarter-final place;
+- 28 players: groups of 5, 5 and 4 pairs; top 3 from each group of 5 and top 2
+  from the group of 4 advance;
+- 30 players: three groups of 5 pairs; top 2 from each advance, while the
+  third-placed pairs play a three-pair mini-tournament and its top 2 advance;
+- 32 players: four groups of 4 pairs, with top 2 from each advancing.
+
+When the number of players leaves a remainder, the admin configures the stage
+to use an individual 1-vs-1 play-off (preferred) or a fairly rotated walkover
+win.
 
 ## Usage
 

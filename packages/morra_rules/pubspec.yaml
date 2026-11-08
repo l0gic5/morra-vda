@@ -1,6 +1,6 @@
 name: morra_rules
 description: A set of rules for the Morra game.
-version: 1.0.0
+version: 0.1.0
 publish_to: none
 
 environment:

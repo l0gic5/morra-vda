@@ -102,7 +102,7 @@ Showing a **closed fist** is the same as showing **one finger**: both are worth 
 ### Points and matches
 
 - A **game** (_partita_) is a contest between the **same two teams**, won by the **first team to reach 16 points** (configurable; on some occasions, e.g. the deciding game, it can be **21**).
-- Results such as **3-0, 3-1, 3-2** (used for stage points) describe the overall outcome of the **match** (_incontro_) between the two teams, won by winning 3 games. _(Term and format to be confirmed, see "Open questions".)_
+- Results such as **3-0, 3-1, 3-2** (used for stage points) describe the overall outcome of the **match** (_incontro_) between the two teams, won by winning 3 games. The first four games target 16 points; only the deciding fifth game at 2-2 targets 21.
 
 ### Lowering the hand
 
@@ -200,6 +200,38 @@ The admin starts **live mode** for the stage. The app generates pairings in two 
 
 Pairs are drawn at each round, **avoiding as far as possible** repeating the same partners and the same opponents. Points go to **individual players**. Final phases (final, semi-finals, etc.) can also award prizes to teams.
 
+### Stage structure: qualifications and final phase
+
+A stage is always divided into two parts:
+
+1. **Qualifications**, with baraonda draws organised in groups.
+2. **Knockout phase**, calculated from the number of participants: round of 16,
+   quarter-finals, semi-finals and final. If there are few participants,
+   unnecessary initial rounds are omitted. The bracket follows a power of two
+   (`2^n`).
+
+The baraonda draw rules are:
+
+- **Up to 19 players**: 5 games are played, drawing the pair each time. The
+  top 8 players advance to the semi-finals, where pairs are drawn again. In
+  case of a tie for eighth place, the younger player advances.
+- **20 players**: 2 groups of 5 pairs; the top 4 pairs from each group advance
+  to the quarter-finals.
+- **22 players**: groups of 6 and 5 pairs; the top 4 pairs from each group
+  advance.
+- **24 players**: 2 groups of 6 pairs; the top 4 pairs from each group
+  advance.
+- **26 players**: groups of 5, 4 and 4 pairs; the top 3 from the group of 5
+  and top 2 from each group of 4 advance. The third-placed pairs from the
+  groups of 4 play a tie-break for the final quarter-final place.
+- **28 players**: groups of 5, 5 and 4 pairs; the top 3 pairs from each group
+  of 5 and top 2 from the group of 4 advance.
+- **30 players**: 3 groups of 5 pairs; the top 2 from each group advance. The
+  third-placed pairs play a three-pair mini-tournament, from which the top 2
+  advance.
+- **32 players**: 4 groups of 4 pairs; the top 2 pairs from each group
+  advance to the quarter-finals.
+
 ### Fixed pairs (coppia fissa)
 
 Pairs are decided in advance and stay the same for the whole stage. Points go to the **pair**, which is rewarded as such.
@@ -208,10 +240,14 @@ Pairs are decided in advance and stay the same for the whole stage. Points go to
 
 Since the game is played by four, a number of players that is not a multiple of 4 leaves a **remainder**. The admin can choose how to handle it:
 
-1. **Walkover win ("lucky one")**: one or more players are awarded a won game, assigned **in a fair rotation** so it is not always the same person who benefits.
-2. **Individual 1-vs-1 play-off** between the players left out.
+1. **Individual 1-vs-1 play-off** between the players left out (the preferred
+   option).
+2. **Walkover win ("lucky one")**: one or more players are awarded a won game,
+   assigned **in a fair rotation** so it is not always the same person who
+   benefits.
 
-The method is a configurable setting of the stage.
+The method is a configurable setting of the stage and can be selected by an
+admin.
 
 ### "One missing" alert
 
@@ -495,9 +531,6 @@ A **fun game inside the app** that simulates real morra, playable **alone agains
 
 ## Open questions
 
-- **Match format**: do the 3-0, 3-1, 3-2 results indicate games won (best of 5)? What is the official name of this unit, and how should the deciding game at 21 be configured?
-- **Remainder**: exact rotation criteria for who receives the walkover win, and the score awarded.
-- **Baraonda finals**: how finalists are selected (top N of the ranking, bracket, etc.) and how teams are rewarded.
 - **Season ranking**: dropped results, tie-break criteria, possible categories.
 - **€10 fee**: possible handling of discounts, freebies or advance payments.
 - **Languages**: Italian and French, and consider adding Patois.
@@ -619,7 +652,7 @@ Mostrare il **pugno chiuso** equivale a mostrare **un dito**: entrambi valgono *
 ### Punti e partite
 
 - Una **partita** è una sfida tra le **stesse due squadre** e la vince la **prima squadra che arriva a 16 punti** (valore configurabile; in alcune occasioni, ad esempio la "bella", può arrivare a **21**).
-- I risultati del tipo **3-0, 3-1, 3-2** (usati per i punti di tappa) descrivono l'esito complessivo dell'**incontro** tra le due squadre, che si vince arrivando a 3 partite. _(Termine e formato da confermare, vedi "Punti ancora da definire".)_
+- I risultati del tipo **3-0, 3-1, 3-2** (usati per i punti di tappa) descrivono l'esito complessivo dell'**incontro** tra le due squadre, che si vince arrivando a 3 partite. Le prime quattro partite hanno obiettivo 16; solo la quinta decisiva sul 2-2 ha obiettivo 21.
 
 ### Abbassare la mano
 
@@ -716,6 +749,39 @@ L'admin avvia la **modalità live** per la tappa. L'app genera gli abbinamenti i
 ### Baraonda
 
 Le coppie si formano a sorteggio a ogni turno, **evitando per quanto possibile** di ripetere gli stessi compagni e gli stessi avversari. I punti vanno ai **singoli giocatori**. Le fasi finali (finale, semifinali, ecc.) possono assegnare premi anche alle squadre.
+
+### Struttura della tappa: qualificazioni e fase finale
+
+Una tappa è sempre divisa in due parti:
+
+1. **Qualificazioni**, con sorteggi a baraonda organizzati in gironi.
+2. **Fase a eliminazione diretta**, calcolata in base al numero di partecipanti:
+   ottavi, quarti, semifinali e finale. Se i partecipanti sono pochi, si
+   omettono le fasi iniziali non necessarie. Il tabellone segue una potenza di
+   due (`2^n`).
+
+Il regolamento dei sorteggi a baraonda è il seguente:
+
+- **Fino a 19 giocatori**: si disputano 5 partite, sorteggiando ogni volta la
+  coppia. I primi 8 giocatori accedono alle semifinali, dove le coppie vengono
+  sorteggiate nuovamente. In caso di parità all'ottavo posto, passa il turno il
+  giocatore più giovane.
+- **20 giocatori**: 2 gironi da 5 coppie; accedono ai quarti le prime 4 coppie
+  di ogni girone.
+- **22 giocatori**: un girone da 6 coppie e uno da 5; accedono ai quarti le
+  prime 4 coppie di ogni girone.
+- **24 giocatori**: 2 gironi da 6 coppie; accedono ai quarti le prime 4 coppie
+  di ogni girone.
+- **26 giocatori**: un girone da 5 coppie e due da 4; accedono ai quarti le
+  prime 3 del girone da 5 e le prime 2 dei gironi da 4. Le terze classificate
+  dei gironi da 4 disputano uno spareggio per l'ultimo posto ai quarti.
+- **28 giocatori**: due gironi da 5 coppie e uno da 4; accedono ai quarti le
+  prime 3 coppie dei gironi da 5 e le prime 2 del girone da 4.
+- **30 giocatori**: 3 gironi da 5 coppie; accedono ai quarti le prime 2 di ogni
+  girone. Le terze disputano un mini torneo a 3 coppie, dal quale passano le
+  prime 2.
+- **32 giocatori**: 4 gironi da 4 coppie; accedono ai quarti le prime 2 coppie
+  di ogni girone.
 
 ### Coppia fissa
 
@@ -1012,9 +1078,7 @@ Un **gioco simpatico dentro l'app** che simula la morra reale, giocabile **da so
 
 ## Punti ancora da definire
 
-- **Formato dell'incontro**: i risultati 3-0, 3-1, 3-2 indicano partite vinte (al meglio delle 5)? Come si chiama ufficialmente questa unità e come configurare la "bella" a 21?
 - **Resto**: criteri esatti di rotazione per chi riceve la vittoria a tavolino e punteggio assegnato.
-- **Finali in baraonda**: come si selezionano i finalisti (primi N della classifica, tabellone, ecc.) e come si premiano le squadre.
 - **Classifica di stagione**: scarti, criteri di spareggio, eventuali categorie.
 - **Quota di 10 €**: eventuale gestione di sconti, omaggi o pagamenti anticipati.
 - **Lingue**: italiano e francese, e valutare l'aggiunta del patois.
