@@ -52,6 +52,10 @@ When the number of players leaves a remainder, the admin configures the stage
 to use an individual 1-vs-1 play-off (preferred) or a fairly rotated walkover
 win.
 
+`BaraondaQualificationPlan.forPlayers` exposes these qualification rules to the
+app and server without performing the random draw. Unsupported participant
+counts are rejected until their official qualification format is defined.
+
 ## Usage
 
 ```dart
